@@ -1,3 +1,4 @@
+#include "main.h"
 #include <stdio.h>
 #include <stdarg.h>
 #include <unistd.h>
@@ -45,7 +46,7 @@ int _printf(const char *format, ...)
 		{
 			buffer[buff_index++] = format[i];
 			if (buff_index == BUFFSIZE)
-				print_buffer(buffer, &buff_index)
+				print_buffer(buffer, &buff_index);
 					pc++;
 		} /*end if*/
 		else
@@ -90,5 +91,4 @@ void print_buffer(char buffer[], int *buff_ind)
 	if (*buff_ind > 0)
 		write(1, &buffer[0], *buff_ind);
 	*buff_ind = 0;
-et number
-
+}
