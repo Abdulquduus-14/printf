@@ -13,10 +13,12 @@ void print_buffer(char buffer[], int *buff_ind);
  */
 int _strlen(char *s)
 {
-	int l =  0;
+	int l;
+
+	l = 0;
 
 	if (!s)
-		return (l);
+		return (0);
 	while (*s != '\0')
 	{
 		++l;
@@ -71,6 +73,11 @@ int _printf(const char *format, ...)
 					print_buffer(s, &len);
 					pc += _strlen(s);
 					break;
+				case 'i':
+				case 'd':
+					printnt_int_number(va_arg(list, int));
+					pc++;
+					break;
 				default:
 					break;
 			} /*end switch*/
@@ -91,4 +98,26 @@ void print_buffer(char buffer[], int *buff_ind)
 	if (*buff_ind > 0)
 		write(1, &buffer[0], *buff_ind);
 	*buff_ind = 0;
+}
+/**
+ * print_int_number - handles integer number printing
+ * @n: int parameter
+ */
+void print_int_number(int n)
+{
+	unsigned int n1;
+	char temp;
+
+	n1 = n;
+	if (n < 0)
+	{
+		write(1, "-", 1);
+		n1 = -n;
+	}
+	if (n1 / 10 != 0)
+	{
+		print_int_number(n1 / 10);
+	}
+	temp = ((n1 % 10) + '0');
+	write(1, &temp, 1);
 }
