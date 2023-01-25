@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #define BUFF_SIZE 1024
 
