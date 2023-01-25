@@ -8,7 +8,6 @@ void print_buffer(char buffer[], int *buff_ind);
 /**
  * _strlen - finds the string length
  * @s: character
- * @l: string length
  * Return: return l
  */
 int _strlen(char *s)
@@ -75,7 +74,7 @@ int _printf(const char *format, ...)
 					break;
 				case 'i':
 				case 'd':
-					printnt_int_number(va_arg(list, int));
+					print_int_number(va_arg(list, int));
 					pc++;
 					break;
 				default:
