@@ -1,46 +1,90 @@
 #include "main.h"
+#include <stdio.h>
+#include <stdarg.h>
+#include <unistd.h>
+#define BUFFSIZE 1024
 
 void print_buffer(char buffer[], int *buff_ind);
 /**
- * _printf - Printf function
- * @format: format
- * Return: Printed chars.
+ * _strlen - finds the string length
+ * @s: character
+ * @l: string length
+ * Return: return l
+ */
+int _strlen(char *s)
+{
+	int l =  0;
+
+	if (!s)
+		return (l);
+	while (*s != '\0')
+	{
+		++l;
+		++s;
+	}
+	return (l);
+}
+/**
+ * _printf - to print
+ * @format: character string
+ * Return: Printed characters
  */
 int _printf(const char *format, ...)
 {
-	int i, printed = 0, printed_chars = 0;
-	int flags, width, precision, size, buff_ind = 0;
+	int i, len, buff_index = 0, pc = 0;
+	char c, *s;/*temp char value*/
 	va_list list;
-	char buffer[BUFF_SIZE];
+	char buffer[BUFFSIZE];
+
+	va_start(list, format);
 
 	if (format == NULL)
 		return (-1);
-	va_start(list, format);
 	for (i = 0; format && format[i] != '\0'; i++)
 	{
 		if (format[i] != '%')
 		{
-			buffer[buff_ind++] = format[i];
-			if (buff_ind == BUFF_SIZE)
-				print_buffer(buffer, &buff_ind);
-			printed_chars++;
-		}
+			buffer[buff_index++] = format[i];
+			if (buff_index == BUFFSIZE)
+				print_buffer(buffer, &buff_index);
+					pc++;
+		} /*end if*/
 		else
 		{
-			print_buffer(buffer, &buff_ind);
-			if (printed == -1)
-				return (-1);
-			printed_chars += printed;
-		}
-	}
-	print_buffer(buffer, &buff_ind);
+			print_buffer(buffer, &buff_index);
+			i++;/* check next character after "%"*/
+			switch (format[i])
+			{
+				case 'c':
+					c = va_arg(list, int);
+					write(1, &c, 1);
+					pc++;
+					break;
+				case ' ':/* if just "%"*/
+					c = va_arg(list, int);
+					write(1, "%%", 1);
+					pc++;
+					break;
+				case 's':
+					s = va_arg(list, char *);
+					len = _strlen(s);
+					print_buffer(s, &len);
+					pc += _strlen(s);
+					break;
+				default:
+					break;
+			} /*end switch*/
+		} /*end else*/
+	} /*end for*/
+	print_buffer(buffer, &buff_index);
 	va_end(list);
-	return (printed_chars);
-}
+	/*return (printed_chars);*/
+	return (pc);
+} /*end _printf()*/
 /**
- * print_buffer - Prints the contents of the buffer if it exist
- * @buffer: Array of chars
- * @buff_ind: Index at which to add next char, represents the length.
+ * print_buffer - to print the variables in a buffer
+ * @buffer: array of characters
+ * @buff_ind: buffer index
  */
 void print_buffer(char buffer[], int *buff_ind)
 {
@@ -48,4 +92,3 @@ void print_buffer(char buffer[], int *buff_ind)
 		write(1, &buffer[0], *buff_ind);
 	*buff_ind = 0;
 }
-
