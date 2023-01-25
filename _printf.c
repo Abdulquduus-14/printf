@@ -104,7 +104,7 @@ void print_buffer(char buffer[], int *buff_ind)
  */
 void print_int_number(int n)
 {
-	unsigned int n1;
+	int n1;
 	char temp;
 
 	n1 = n;
